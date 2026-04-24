@@ -7,6 +7,7 @@ Custom ComfyUI nodes for the INDG Toolset.
 | Node | Class name | Category | Short description |
 |------|-----------|----------|-------------------|
 | INDG Flexible Image Batch | `INDGFlexibleImageBatch` | `INDG/image` | Batch 1–7 images into one tensor; optional slots silently skipped |
+| INDG Output Path | `INDGOutputPath` | `INDG/utils` | Combine base path / client / product / filename into one path string |
 | NBP RAM Cleanup | `NBPRAMCleanup` | `INDG/utils` | Aggressively free CPU RAM at the end of a workflow |
 
 ---
@@ -31,6 +32,28 @@ RP Interface workflow builder can treat every input as a plain
 
 **Output**
 - `images` — batched IMAGE tensor
+
+---
+
+### INDG Output Path (`INDGOutputPath`)
+
+**Category:** INDG/utils
+
+Combines four path segments into a single output string — replacing the
+current pattern of multiple `PrimitiveStringMultiline` + concat nodes.
+
+Connect the output directly to a MetaSaver `filename_prefix` input (or any
+node that expects a path string).  Empty segments are silently skipped so
+you can leave optional parts blank without getting double slashes.
+
+**Inputs**
+- `client` (required) — client name, e.g. `"Deployed/HD"`
+- `product` (required) — project/product name, e.g. `"ProjectName"`
+- `filename` (required) — filename prefix, e.g. `"Shot001"`
+- `base_path` (optional, default `"ComfyUI"`) — root folder; leave blank to omit
+
+**Output**
+- `path` — joined path string, e.g. `"ComfyUI/Deployed/HD/ProjectName/Shot001"`
 
 ---
 
